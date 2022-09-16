@@ -1,0 +1,34 @@
+{#Resources used:
+https://cloud.google.com/compute/docs/reference/rest/v1/instances
+https://github.com/GoogleCloudPlatform/deploymentmanager-samples/blob/master/examples/v2/instance_pool/jinja/instance-pool.jinja
+#}
+
+{% for index in range(1, properties["amountCreate"] + 1) %}
+{% set NAME_ASSIGNED = properties["namePrefix"] + '-' +  env["deployment"] + '-' + index|string %}
+
+resources:
+- name: vm-{{NAME_ASSIGNED}}
+  type: compute.v1.instance
+  properties:
+    zone: {{ properties["zone"]}}
+    machineType: zones/{{ properties["zone"] }}/machineTypes/{{ properties["machineType"] }}
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: {{ properties["sourceImage"] }}
+    networkInterfaces:
+      - network: {{properties["network"]}}
+        subnetwork: {{properties["subnet"]}}
+
+{#Network inferred by subnetwork#}
+{#Is automatically assigned an unused IP#}
+
+        {% if properties["externalIP"] %}
+        accessConfigs:
+        - name: external-nat
+          type: ONE_TO_ONE_NAT
+        {% endif %}
+{% endfor %}

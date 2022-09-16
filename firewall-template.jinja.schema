@@ -1,0 +1,40 @@
+info:
+  title: firewall template schema
+  author: Joses
+  description: Creates a firewall rule that can be adjusted to different parameters
+#Allows HTTP, ICMP, Internal Communication and SSH firewall rules to be implemented
+
+imports:
+  - path: firewall-template.jinja
+
+required:
+  - sourceRanges
+  - networkName
+  - ipProtocols
+  - ports
+
+properties:
+  sourceRanges:
+    type: string
+    description: Range of ips where firewall rule applies.
+
+  ipProtocols:
+    type: string
+    description: Determines which IP protocol the rule belongs to
+
+  ports:
+    type: string
+    descrption: Shows what ports the firewall rule uses
+
+#Allow icmp for network maintenance
+#gcloud compute firewall-rules create "cloudNet-allow-icmp" --allow icmp
+#--network "custom-network" --target-tags rules
+
+#Allow internal communications
+#gcloud compute firewall-rules create "cloudNet-allow-internal"
+#--allow tcp:0-65535,udp:0-65535,icmp --network "custom-network"
+#--source-ranges "10.0.0.0/16","10.1.0.0/16","10.2.0.0/16"
+
+#Allow ssh for vpn purposes, to be used with teleworkers
+#gcloud compute firewall-rules create "cloudNet-allow-ssh"
+#--allow tcp:22 --network "custom-network" --target-tags "ssh"

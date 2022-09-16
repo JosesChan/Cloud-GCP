@@ -1,0 +1,85 @@
+#Start of YAML configuration file
+#Resources used:
+#https://cloud.google.com/deployment-manager/docs/configuration/use-references
+
+
+#imported jinja2 templates
+imports:
+- path: vm-template.jinja
+- path: sql-template.jinja
+- path: buckets-template.jinja
+- path: network-template.jinja
+- path: subnet-template.jinja
+- path: sql-template.jinja
+- path: firewall-template.jinja
+
+resources:
+  - name: intranet
+    type: network-template.jinja
+
+  - name: subnetuscentral
+    type: subnet-template.jinja
+    properties:
+      namePrefix: usce
+      network: $(ref.intranet.selfLink)
+      region: us-central1
+      cidrRange: 10.128.0.0/20
+
+  - name: subneteuwest
+    type: subnet-template.jinja
+    properties:
+      namePrefix: euwe
+      network: $(ref.intranet.selfLink)
+      region: europe-west2
+      cidrRange: 10.154.0.0/20
+
+  - name: subnetaseast
+    type: subnet-template.jinja
+    properties:
+      namePrefix: asea
+      network: $(ref.intranet.selfLink)
+      region: asia-east1
+      cidrRange: 10.140.0.0/20
+
+  - name: vm-eu
+    type: vm-template.jinja
+    properties:
+      namePrefix: euwe
+      network: $(ref.intranet.selfLink)
+      subnet: $(ref.subneteuwest.selfLink)
+      machineType: n1-standard-1
+      zone: europe-west2-a
+      externalIP: true
+
+  - name: vm-us
+    type: vm-template.jinja
+    properties:
+      namePrefix: usce
+      network: $(ref.intranet.selfLink)
+      subnet: $(ref.subnetuscentral.selfLink)
+      machineType: n1-standard-1
+      zone: us-central1-a
+      externalIP: true
+
+  - name: bucketeurope
+    type: buckets-template.jinja
+    properties:
+      namePrefix: eu
+      bucketSizeGB: "100"
+      location: EU
+      storageClass: STANDARD
+
+  - name: cloudSQL
+    type: sql-template.jinja
+    properties:
+      userName: genericUser
+      userID: "A51"
+      password: "C22"
+
+  - name: httpfirewall
+    type: firewall-template.jinja
+    properties:
+      sourceRanges: 0.0.0.0/0
+      networkName: $(ref.intranet.selfLink)
+      ipProtocols: tcp
+      ports: "[80]"

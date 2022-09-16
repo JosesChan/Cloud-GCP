@@ -1,0 +1,22 @@
+{# Resources used:
+https://github.com/GoogleCloudPlatform/deploymentmanager-samples/blob/master/google/resource-snippets/storage-v1/bucket.jinja
+#}
+
+{#Creates a bucket for unstructured data#}
+
+
+{% for index in range(1, properties['amountCreate'] + 1) %}
+{% set NAME_ASSIGNED = env['deployment'] + '-' + index|string %}
+
+resources:
+{#type: storage.v1.bucket#}
+- type: gcp-types/storage-v1:buckets
+  name: disk-{{NAME_ASSIGNED}}
+  properties:
+    sizeGb: {{properties["bucketSizeGB"]}}
+    location: {{ properties["location"]}}
+    storageClass: {{ properties["storageClass"] }}
+
+{#Further properties such as predefined ACLs would be set if IAM was allowed#}
+
+{% endfor %}

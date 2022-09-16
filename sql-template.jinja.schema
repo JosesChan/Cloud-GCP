@@ -1,0 +1,40 @@
+#Resources used
+#https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1beta4/instances#sqlactivationpolicy
+#https://github.com/GoogleCloudPlatform/deploymentmanager-samples/blob/master/examples/v2/cloudsql/cloudsql.jinja.schema
+
+
+info:
+  title: Sql Template schema
+  author: Joses
+  description: Creates a sql instance
+
+imports:
+  - path: sql-template.jinja
+
+required:
+  - userID
+  - userName
+  - password
+
+properties:
+  userID:
+    type: string
+    default: "PlaceholderID"
+    description: ID for an account
+
+  userName:
+    type: string
+    default: "PlaceholderName"
+    description: user name for an account
+
+  password:
+    type: string
+    default: "PlaceholderPassword"
+    description: Password for an account
+
+  tier:
+    type: string
+    default: "db-n1-standard-1"
+    description: The RAM and size of the sql storage.
+#To view available tiers type in code below into gcloud skd shell
+#gcloud sql tiers list

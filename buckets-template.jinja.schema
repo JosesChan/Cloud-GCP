@@ -1,0 +1,42 @@
+info:
+  title: Buckets Template
+  author: Joses
+  description: Creates a bucket
+
+imports:
+  - path: buckets-template.jinja
+
+required:
+  - bucketSizeGB
+  - location
+  - storageClass
+  - namePrefix
+
+properties:
+  namePrefix:
+    type: string
+    description: Name given to prefix the device name.
+
+  bucketSizeGB:
+    type: string
+    default: "100"
+    description: The size (gb) the bucket will be given. Default size is 100.
+
+  location:
+    type: string
+    default: "EU"
+    description: Location the bucket will be in, preferably a multi-region.
+#See link below for list of locations
+#https://cloud.google.com/storage/docs/locations#available-locations
+
+  storageClass:
+    type: string
+    default: "STANDARD"
+    description: Type of storage class, categorizing data the bucket will handle.
+#See link below for list of storage classes
+#https://cloud.google.com/storage/docs/storage-classes
+
+  amountCreate:
+    type: integer
+    default: 1
+    description: Amount of buckets to create of the same type.

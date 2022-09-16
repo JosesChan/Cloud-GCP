@@ -1,0 +1,42 @@
+{#Resources used:
+https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1beta4/instances#sqlactivationpolicy
+https://cloud.google.com/sql/docs/mysql/flags
+https://github.com/GoogleCloudPlatform/deploymentmanager-samples/blob/master/examples/v2/cloudsql/cloudsql.jinja
+https://github.com/raelga/dm-templates/blob/master/sql/master-instance.jinja
+https://github.com/GoogleCloudPlatform/deploymentmanager-samples/blob/master/google/resource-snippets/sqladmin-v1beta4/cloudsql_with_user.jinja
+#}
+
+{#Instance has an extra integer since instance name can't be reused within a week#}
+{#After deletion#}
+{% set INSTANCE_NAME = env['deployment'] + '-instance3' %}
+{% set DATABASE_NAME = env['deployment'] + 'intranetDB' %}
+
+resources:
+- name: {{INSTANCE_NAME}}
+  type: gcp-types/sqladmin-v1beta4:instances
+  properties:
+    settings:
+      tier: {{ properties["tier"] }}
+{#Create a cloud sql instance#}
+
+
+- name: {{DATABASE_NAME}}
+  type: gcp-types/sqladmin-v1beta4:databases
+  properties:
+    name: {{DATABASE_NAME}}
+    instance: $(ref.{{ INSTANCE_NAME }}.name)
+    charset: utf8
+{#Create a cloud sql database#}
+
+
+- name: {{properties["userName"]}}
+  type: gcp-types/sqladmin-v1beta4:users
+  metadata:
+    dependsOn:
+    - {{DATABASE_NAME}}
+  properties:
+    name: {{properties["userName"]}}
+    instance: $(ref.{{ INSTANCE_NAME }}.name)
+    host: {{properties["userID"]}}
+    password: {{properties["password"]}}
+{#Create a cloud sql user#}

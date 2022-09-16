@@ -1,0 +1,23 @@
+info:
+  title: subnet template schema
+  author: Joses
+  description: Creates a subnet
+
+imports:
+  - path: subnet-template.jinja
+
+required:
+  - cidrRange
+  - network
+  - region
+  - namePrefix
+
+properties:
+  namePrefix:
+    type: string
+    description: Name given to prefix the subnet name.
+
+  region:
+    type: string
+    default: europe-west2
+    description: Region that subnet will be in

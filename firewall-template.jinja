@@ -1,0 +1,10 @@
+resources:
+- name: {{env['deployment']}}firewall
+  type: compute.v1.firewall
+  properties:
+    network: {{properties["networkName"]}}
+    sourceRanges: [{{properties["sourceRanges"]}}]
+    allowed:
+    - IPProtocol: {{properties["ipProtocols"]}}
+      ports: {{properties["ports"]}}
+{#Using schema to restrict ports and IP ranges#}

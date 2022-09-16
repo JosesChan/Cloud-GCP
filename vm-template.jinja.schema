@@ -1,0 +1,55 @@
+info:
+  title: Virtual Machine Template schema
+  author: Joses
+  description: Creates a virtual machine that can be customized for region and machine properties.
+
+imports:
+  - path: vm-template.jinja
+
+required:
+  - namePrefix
+  - subnet
+  - machineType
+  - zone
+  - network
+
+properties:
+  namePrefix:
+    type: string
+    description: Name given to prefix the device name.
+
+  diskSizeGb:
+    type: string
+    default: "100"
+    description: The size (gb) the os disk will be given. Default size is 100.
+
+
+  sourceImage:
+    type: string
+    default: "projects/debian-cloud/global/images/family/debian-11"
+    description: The operating system image to be loaded on the instance. Default is debian 9.
+#See below for different OS images
+#https://cloud.google.com/compute/docs/images/os-details
+
+  machineType:
+    type: string
+    default: "n1-standard-1"
+    description: Type of machine to be loaded. Default type is an n1-standard-1 machine
+#See below for different machine types
+#https://cloud.google.com/compute/docs/machine-types
+
+  zone:
+    type: string
+    default: "europe-west2-a"
+    description: Zone for virtual machine to deploy in, default is euw-2a.
+#See below for different zones
+#https://cloud.google.com/compute/docs/regions-zones
+
+  externalIP:
+    type: boolean
+    description: Check if vm has an external ip or not
+
+  amountCreate:
+    type: integer
+    default: 1
+    description: Amount of VMs to create of the same type.
