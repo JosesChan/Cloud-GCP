@@ -4,3 +4,6 @@ Cloud project that creates IAAS through Google Cloud Platform. Originally for Un
 config.yaml file allows input of certain configuration into jinja files enforces by their respective schema.
 
 Uses Google Compute, CloudSQL, CloudStorage.
+
+Use the following documentation to learn and deploy. 
+https://cloud.google.com/deployment-manager/docs/deployments
